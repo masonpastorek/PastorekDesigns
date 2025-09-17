@@ -9,15 +9,23 @@
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg-color-light: #f0f0f0;
+            --bg-color-light: #f0f0f0; 
             --text-color-light: #1a1a1a;
-            --header-bg-light: #ffffff;
+            --header-bg-light: rgba(255, 255, 255, 0.9); 
             --accent-color-light: #007bff;
+            --input-bg-light: #ffffff;
+            --input-border-light: #cccccc;
+            --button-bg-light: #007bff;
+            --button-text-light: #ffffff;
 
             --bg-color-dark: #1a1a1a;
             --text-color-dark: #f0f0f0;
-            --header-bg-dark: #222222;
+            --header-bg-dark: rgba(34, 34, 34, 0.9); 
             --accent-color-dark: #66b3ff;
+            --input-bg-dark: #333333;
+            --input-border-dark: #555555;
+            --button-bg-dark: #66b3ff;
+            --button-text-dark: #1a1a1a;
         }
 
         body {
@@ -25,9 +33,9 @@
             margin: 0;
             padding: 0;
             transition: background-color 0.5s, color 0.5s;
-            background-color: var(--bg-color-light);
+            background-color: var(--bg-color-light); 
             color: var(--text-color-light);
-            overflow: hidden; /* Hide overflow for background animation */
+            overflow-x: hidden; /* Prevent horizontal scroll from background animation */
             position: relative;
         }
 
@@ -38,25 +46,32 @@
 
         /* Interactive background - subtle water ripples */
         .background-animation {
-            position: absolute;
+            position: fixed; /* Use fixed to keep background static while scrolling */
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            z-index: -1;
-            overflow: hidden;
+            z-index: -2; 
+            background-image: url('images/background.png'); 
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            opacity: 1; 
+            transition: opacity 0.5s ease-in-out; 
         }
 
+        /* Ripples are now on top of background.png, but still subtle */
         .ripple {
             position: absolute;
             border-radius: 50%;
-            background: rgba(0, 123, 255, 0.1);
+            background: rgba(0, 123, 255, 0.15); 
             animation: ripple-spread 10s infinite linear;
             opacity: 0;
+            z-index: -1; 
         }
 
         .dark-mode .ripple {
-            background: rgba(102, 179, 255, 0.1);
+            background: rgba(102, 179, 255, 0.15); 
         }
 
         @keyframes ripple-spread {
@@ -78,6 +93,8 @@
             margin: 0 auto;
             padding: 20px;
             text-align: center;
+            position: relative; 
+            z-index: 1;
         }
 
         header {
@@ -87,7 +104,11 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            position: relative;
+            position: sticky; /* Make header sticky */
+            top: 0;
+            z-index: 10; /* Ensure header is above other content */
+            backdrop-filter: blur(5px); 
+            -webkit-backdrop-filter: blur(5px);
         }
 
         .dark-mode header {
@@ -100,17 +121,18 @@
             align-items: center;
             font-size: 24px;
             font-weight: bold;
-            color: var(--text-color-light);
-        }
-
-        .dark-mode .logo {
-            color: var(--text-color-dark);
         }
 
         .logo img {
-            height: 50px;
+            height: 60px; 
             margin-right: 15px;
+            transition: filter 0.5s ease-in-out;
         }
+        
+        .dark-mode .logo img {
+            filter: invert(1) hue-rotate(180deg) saturate(1.5) brightness(1.2); 
+        }
+
 
         .gofundme-link {
             text-decoration: none;
@@ -136,29 +158,48 @@
             background-color: var(--accent-color-dark);
         }
 
-        .content {
+        .content-section { /* Renamed from .content to avoid conflict */
             padding: 50px 20px;
             display: flex;
             flex-direction: column;
             align-items: center;
             gap: 40px;
+            background-color: rgba(255, 255, 255, 0.8); 
+            border-radius: 10px;
+            margin-top: 20px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            backdrop-filter: blur(3px); 
+            -webkit-backdrop-filter: blur(3px);
+            margin-bottom: 40px; /* Space before next section */
         }
 
-        h1 {
+        .dark-mode .content-section {
+            background-color: rgba(0, 0, 0, 0.8);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+        }
+
+        h1, h2 {
             font-size: 4em;
             margin-bottom: 10px;
             letter-spacing: -2px;
             color: var(--accent-color-light);
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
         }
 
-        .dark-mode h1 {
+        .dark-mode h1, .dark-mode h2 {
             color: var(--accent-color-dark);
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.4);
         }
 
         p {
             font-size: 1.2em;
             line-height: 1.6;
             max-width: 600px;
+            text-shadow: 1px 1px 2px rgba(255,255,255,0.5); 
+        }
+
+        .dark-mode p {
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
         }
 
         .boards-section {
@@ -198,9 +239,9 @@
             border-radius: 15px;
         }
 
-        .board-1 { background-image: url('https://via.placeholder.com/250x500?text=Prototype+1'); }
-        .board-2 { background-image: url('https://via.placeholder.com/250x500?text=Prototype+2'); }
-        .board-3 { background-image: url('https://via.placeholder.com/250x500?text=Prototype+3'); }
+        .board-1 { background-image: url('images/board1.png'); }
+        .board-2 { background-image: url('images/board2.png'); }
+        .board-3 { background-image: url('images/board3.png'); }
 
         .board-label {
             position: absolute;
@@ -214,14 +255,132 @@
             transform: rotate(-5deg);
         }
 
+        /* Ideas Page Form Styling */
+        .ideas-page-section {
+            padding: 50px 20px;
+            background-color: rgba(255, 255, 255, 0.9);
+            border-radius: 10px;
+            margin-top: 40px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            backdrop-filter: blur(3px);
+            -webkit-backdrop-filter: blur(3px);
+            max-width: 600px; /* Constrain width of the form */
+            margin-left: auto;
+            margin-right: auto;
+            text-align: left; /* Align form labels to the left */
+        }
+
+        .dark-mode .ideas-page-section {
+            background-color: rgba(0, 0, 0, 0.9);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+        }
+
+        .ideas-page-section h2 {
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 3em; /* Slightly smaller than main H1 */
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: var(--text-color-light);
+            text-shadow: none; /* No shadow on labels for clarity */
+        }
+
+        .dark-mode .form-group label {
+            color: var(--text-color-dark);
+        }
+
+        .form-group input[type="text"],
+        .form-group input[type="tel"],
+        .form-group textarea {
+            width: calc(100% - 20px); /* Account for padding */
+            padding: 10px;
+            border: 1px solid var(--input-border-light);
+            border-radius: 5px;
+            background-color: var(--input-bg-light);
+            color: var(--text-color-light);
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1em;
+            transition: border-color 0.3s, background-color 0.3s;
+        }
+
+        .dark-mode .form-group input[type="text"],
+        .dark-mode .form-group input[type="tel"],
+        .dark-mode .form-group textarea {
+            border-color: var(--input-border-dark);
+            background-color: var(--input-bg-dark);
+            color: var(--text-color-dark);
+        }
+
+        .form-group input[type="text"]:focus,
+        .form-group input[type="tel"]:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--accent-color-light);
+            box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.2);
+        }
+
+        .dark-mode .form-group input[type="text"]:focus,
+        .dark-mode .form-group input[type="tel"]:focus,
+        .dark-mode .form-group textarea:focus {
+            border-color: var(--accent-color-dark);
+            box-shadow: 0 0 0 2px rgba(102, 179, 255, 0.2);
+        }
+
+        .form-group textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        .submit-button {
+            display: block;
+            width: 100%;
+            padding: 12px 20px;
+            background-color: var(--button-bg-light);
+            color: var(--button-text-light);
+            border: none;
+            border-radius: 5px;
+            font-size: 1.1em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.2s;
+        }
+
+        .dark-mode .submit-button {
+            background-color: var(--button-bg-dark);
+            color: var(--button-text-dark);
+        }
+
+        .submit-button:hover {
+            background-color: #0056b3;
+            transform: translateY(-2px);
+        }
+        .dark-mode .submit-button:hover {
+            background-color: #3388cc;
+        }
+
+
         footer {
             margin-top: 50px;
             padding: 20px;
             border-top: 1px solid #ccc;
+            background-color: rgba(255, 255, 255, 0.8); 
+            backdrop-filter: blur(3px);
+            -webkit-backdrop-filter: blur(3px);
+            position: relative;
+            z-index: 1;
         }
 
         .dark-mode footer {
             border-top: 1px solid #444;
+            background-color: rgba(0, 0, 0, 0.8);
         }
 
         .mode-toggle {
@@ -240,6 +399,9 @@
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             transition: background-color 0.5s, color 0.5s;
             font-size: 24px;
+            z-index: 10; 
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
         }
 
         .dark-mode .mode-toggle {
@@ -251,51 +413,55 @@
 </head>
 <body>
 
-    <div class="background-animation"></div>
-
+    <div class="background-animation"></div> 
+    
     <header>
         <div class="logo">
-            <svg id="logo-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
-                <defs>
-                    <linearGradient id="logo-gradient-light" x1="0%" y1="0%" x2="100%" y2="100%">
-                        <stop offset="0%" style="stop-color:#007bff;stop-opacity:1" />
-                        <stop offset="100%" style="stop-color:#0056b3;stop-opacity:1" />
-                    </linearGradient>
-                    <linearGradient id="logo-gradient-dark" x1="0%" y1="0%" x2="100%" y2="100%">
-                        <stop offset="0%" style="stop-color:#66b3ff;stop-opacity:1" />
-                        <stop offset="100%" style="stop-color:#3388cc;stop-opacity:1" />
-                    </linearGradient>
-                </defs>
-                <path d="M50,10 A40,40 0 1,1 50,90 A40,40 0 1,1 50,10 Z" fill="url(#logo-gradient-light)"/>
-                <path d="M50,10 L50,90 M20,40 L80,40 M20,60 L80,60" stroke="#fff" stroke-width="5" stroke-linecap="round"/>
-                <circle cx="50" cy="50" r="10" fill="#fff"/>
-                <text x="50" y="50" font-family="Montserrat, sans-serif" font-size="20" font-weight="bold" fill="#000" text-anchor="middle" alignment-baseline="central">P</text>
-            </svg>
-            <span>Pastorek Designs Co.</span>
+            <img src="images/pastorek_logo.png" alt="Pastorek Designs Co. Logo">
         </div>
         <a href="https://www.gofundme.com/f/your-campaign-link" target="_blank" class="gofundme-link">Support Us on GoFundMe</a>
     </header>
 
     <div class="container">
-        <div class="content">
+        <div class="content-section">
             <h1>Pastorek Designs Co.</h1>
             <p><strong>Innovating wakeboard design since 2025.</strong> We are Pastorek Inc., a company dedicated to pushing the boundaries of what's possible on the water. Stay tuned for our full collection of high-performance wakeboards.</p>
             <p>Our team is currently in the R&D phase, meticulously crafting and testing our first line of boards. The prototypes you see here are a glimpse into the future of wakeboarding.</p>
         </div>
 
-        <div class="boards-section">
-            <div class="board">
-                <div class="board-image board-1"></div>
-                <div class="board-label">PROTOTYPE</div>
+        <div class="content-section"> <h2>Our Prototypes</h2>
+            <div class="boards-section">
+                <div class="board">
+                    <div class="board-image board-1"></div>
+                    <div class="board-label">PROTOTYPE</div>
+                </div>
+                <div class="board">
+                    <div class="board-image board-2"></div>
+                    <div class="board-label">PROTOTYPE</div>
+                </div>
+                <div class="board">
+                    <div class="board-image board-3"></div>
+                    <div class="board-label">PROTOTYPE</div>
+                </div>
             </div>
-            <div class="board">
-                <div class="board-image board-2"></div>
-                <div class="board-label">PROTOTYPE</div>
-            </div>
-            <div class="board">
-                <div class="board-image board-3"></div>
-                <div class="board-label">PROTOTYPE</div>
-            </div>
+        </div>
+
+        <div class="ideas-page-section">
+            <h2>IDEAS PAGE FOR RIDERS</h2>
+            <form action="#" method="POST"> <div class="form-group">
+                    <label for="name">Name:</label>
+                    <input type="text" id="name" name="name" required>
+                </div>
+                <div class="form-group">
+                    <label for="phone">Phone:</label>
+                    <input type="tel" id="phone" name="phone">
+                </div>
+                <div class="form-group">
+                    <label for="ideas">Your Ideas:</label>
+                    <textarea id="ideas" name="ideas" placeholder="Share your innovative wakeboard ideas, features, or anything you'd love to see in our future designs!" required></textarea>
+                </div>
+                <button type="submit" class="submit-button">Submit Your Ideas</button>
+            </form>
         </div>
     </div>
 
@@ -312,25 +478,23 @@
         const modeToggle = document.querySelector('.mode-toggle');
         const body = document.body;
         const modeIcon = document.getElementById('mode-icon');
-        const logoPath = document.querySelector('.logo path');
-        const logoText = document.querySelector('.logo text');
-        const logoSvg = document.getElementById('logo-svg');
+        const logoImg = document.querySelector('.logo img'); 
 
         modeToggle.addEventListener('click', () => {
             body.classList.toggle('dark-mode');
             const isDarkMode = body.classList.contains('dark-mode');
             if (isDarkMode) {
                 modeIcon.innerHTML = '&#9789;'; // Moon icon
-                logoPath.style.fill = 'url(#logo-gradient-dark)';
-                logoText.style.fill = '#f0f0f0';
+                // This filter helps adapt a light-colored PNG logo for a dark background.
+                // If your 'pastorek_logo.png' is already dark or transparent and looks good, you can remove this.
+                logoImg.style.filter = 'invert(1) hue-rotate(180deg) saturate(1.5) brightness(1.2)'; 
             } else {
                 modeIcon.innerHTML = '&#9788;'; // Sun icon
-                logoPath.style.fill = 'url(#logo-gradient-light)';
-                logoText.style.fill = '#000';
+                logoImg.style.filter = 'none'; // Remove filter for light mode
             }
         });
 
-        // Interactive Background Animation
+        // Interactive Background Animation (Ripples)
         const bgAnimation = document.querySelector('.background-animation');
         
         function createRipple() {
@@ -350,11 +514,14 @@
             
             setTimeout(() => {
                 ripple.remove();
-            }, 10000); // Same duration as animation
+            }, 10000); 
         }
         
-        setInterval(createRipple, 1500);
-        
+        // Only create ripples if the background image is loaded (or visible)
+        // This is a simple check, a more robust solution might use image load events.
+        if (window.getComputedStyle(bgAnimation).backgroundImage !== 'none') {
+             setInterval(createRipple, 1500);
+        }
     </script>
 
 </body>
