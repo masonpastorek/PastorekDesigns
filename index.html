@@ -102,8 +102,7 @@
             background-color: var(--header-bg-light);
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             display: flex;
-            /* This spaces the left item (.mode-toggle) from the right group (.header-right-group) */
-            justify-content: space-between; 
+            /* We don't need justify-content: space-between anymore, as margin-left: auto handles the spacing */
             align-items: center;
             position: sticky; /* Make header sticky */
             top: 0;
@@ -117,14 +116,11 @@
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
         }
         
-        /* New Grouping Class for the right side of the header */
-        .header-right-group {
-            display: flex;
-            align-items: center;
-            gap: 30px; /* Space between the logo and the GoFundMe button */
-        }
+        /* NO .header-right-group NEEDED! */
 
         .logo {
+            /* FIX: This pushes the logo and everything after it (the link) to the far right. */
+            margin-left: auto;
             display: flex;
             align-items: center;
             font-size: 24px;
@@ -150,6 +146,8 @@
             padding: 10px 20px;
             border-radius: 5px;
             transition: background-color 0.3s, color 0.3s;
+            /* Add spacing between the logo and the link */
+            margin-left: 30px; 
         }
 
         .dark-mode .gofundme-link {
@@ -408,8 +406,8 @@
             z-index: 5; 
             backdrop-filter: blur(5px);
             -webkit-backdrop-filter: blur(5px);
-            /* Add margin to separate from the logo */
-            margin-right: 20px;
+            /* Small margin to separate from the logo */
+            margin-right: 20px; 
         }
 
         .dark-mode .mode-toggle {
@@ -428,11 +426,10 @@
             <span id="mode-icon">&#9788;</span>
         </div>
 
-        <div class="header-right-group">
-            <div class="logo">
-                </div>
-            <a href="https://www.gofundme.com/f/your-campaign-link" target="_blank" class="gofundme-link">Support Us on GoFundMe</a>
-        </div>
+        <div class="logo">
+            </div>
+
+        <a href="https://www.gofundme.com/f/your-campaign-link" target="_blank" class="gofundme-link">Support Us on GoFundMe</a>
     </header>
 
     <div class="container">
@@ -481,14 +478,12 @@
     <footer>
         <p>&copy; 2025 Pastorek Inc. All Rights Reserved.</p>
     </footer>
-    
-        <script>
+
+    <script>
         // Dark Mode Toggle
         const modeToggle = document.querySelector('.mode-toggle');
         const body = document.body;
         const modeIcon = document.getElementById('mode-icon');
-        // NOTE: logoImg will be null because the <img> tag is missing from .logo div.
-        // I have added a comment in the HTML where you need to put the <img> tag.
         const logoImg = document.querySelector('.logo img'); 
 
         modeToggle.addEventListener('click', () => {
@@ -496,13 +491,11 @@
             const isDarkMode = body.classList.contains('dark-mode');
             if (isDarkMode) {
                 modeIcon.innerHTML = '&#9789;'; // Moon icon
-                // Check if logoImg exists before trying to apply filter
                 if (logoImg) {
                     logoImg.style.filter = 'invert(1) hue-rotate(180deg) saturate(1.5) brightness(1.2)'; 
                 }
             } else {
                 modeIcon.innerHTML = '&#9788;'; // Sun icon
-                // Check if logoImg exists before trying to remove filter
                 if (logoImg) {
                     logoImg.style.filter = 'none'; // Remove filter for light mode
                 }
