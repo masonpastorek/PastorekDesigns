@@ -102,7 +102,7 @@
             background-color: var(--header-bg-light);
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             display: flex;
-            /* We don't need justify-content: space-between anymore, as margin-left: auto handles the spacing */
+            justify-content: space-between;
             align-items: center;
             position: sticky; /* Make header sticky */
             top: 0;
@@ -115,12 +115,8 @@
             background-color: var(--header-bg-dark);
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
         }
-        
-        /* NO .header-right-group NEEDED! */
 
         .logo {
-            /* FIX: This pushes the logo and everything after it (the link) to the far right. */
-            margin-left: auto;
             display: flex;
             align-items: center;
             font-size: 24px;
@@ -146,8 +142,6 @@
             padding: 10px 20px;
             border-radius: 5px;
             transition: background-color 0.3s, color 0.3s;
-            /* Add spacing between the logo and the link */
-            margin-left: 30px; 
         }
 
         .dark-mode .gofundme-link {
@@ -390,7 +384,9 @@
         }
 
         .mode-toggle {
-            /* MODIFIED: Removed position: fixed, top, right */
+            position: fixed;
+            top: 20px;
+            right: 20px;
             width: 50px;
             height: 50px;
             border-radius: 50%;
@@ -403,11 +399,9 @@
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             transition: background-color 0.5s, color 0.5s;
             font-size: 24px;
-            z-index: 5; 
+            z-index: 10; 
             backdrop-filter: blur(5px);
             -webkit-backdrop-filter: blur(5px);
-            /* Small margin to separate from the logo */
-            margin-right: 20px; 
         }
 
         .dark-mode .mode-toggle {
@@ -422,20 +416,15 @@
     <div class="background-animation"></div> 
     
     <header>
-        <div class="mode-toggle">
-            <span id="mode-icon">&#9788;</span>
-        </div>
-
-        <div class="logo">
-            </div>
-
-        <a href="https://www.gofundme.com/f/your-campaign-link" target="_blank" class="gofundme-link">Support Us on GoFundMe</a>
+        <div class="logo">
+        </div>
+        <a href="https://www.gofundme.com/f/your-campaign-link" target="_blank" class="gofundme-link">Support Us on GoFundMe</a>
     </header>
 
     <div class="container">
         <div class="content-section">
             <h1>Pastorek Designs Co.</h1>
-            <p><strong>Innovating wakeboard design since 2025.</strong> We are Pastorek Inc., a potential company dedicated to pushing the boundaries of what's possible on the water. Stay tuned for our full collection of high-performance wakeboards.</p>
+            <p><strong>Innovating wakeboard design since 2025.</strong> We are Pastorek Inc., potential company dedicated to pushing the boundaries of what's possible on the water. Stay tuned for our full collection of high-performance wakeboards.</p>
             <p>Our team is currently in the R&D phase, meticulously crafting and testing our first line of boards. The prototypes you see here are a glimpse into the future of wakeboarding.</p>
         </div>
 
@@ -479,6 +468,10 @@
         <p>&copy; 2025 Pastorek Inc. All Rights Reserved.</p>
     </footer>
 
+    <div class="mode-toggle">
+        <span id="mode-icon">&#9788;</span>
+    </div>
+
     <script>
         // Dark Mode Toggle
         const modeToggle = document.querySelector('.mode-toggle');
@@ -491,14 +484,12 @@
             const isDarkMode = body.classList.contains('dark-mode');
             if (isDarkMode) {
                 modeIcon.innerHTML = '&#9789;'; // Moon icon
-                if (logoImg) {
-                    logoImg.style.filter = 'invert(1) hue-rotate(180deg) saturate(1.5) brightness(1.2)'; 
-                }
+                // This filter helps adapt a light-colored PNG logo for a dark background.
+                // If your 'pastorek_logo.png' is already dark or transparent and looks good, you can remove this.
+                logoImg.style.filter = 'invert(1) hue-rotate(180deg) saturate(1.5) brightness(1.2)'; 
             } else {
                 modeIcon.innerHTML = '&#9788;'; // Sun icon
-                if (logoImg) {
-                    logoImg.style.filter = 'none'; // Remove filter for light mode
-                }
+                logoImg.style.filter = 'none'; // Remove filter for light mode
             }
         });
 
@@ -533,4 +524,4 @@
     </script>
 
 </body>
-</html>
+</html> it is a one page website show me which code to change and how 
